@@ -91,6 +91,57 @@ function createEnviroment(){
     scene.add(envMesh)
 }
 
+function createLee(){
+    var material = new createLeeMaterial();
+
+    var loader = new THREE.OBJLoader();
+
+    loader.load('assets/lee/lee.obj', function(object){
+
+        object.traverse(function (child) {
+
+            if (child instanceof THREE.Mesh){
+                child.material = material;
+                child.receiveShadow = true;
+                child.castShadow = true;
+            }
+        });
+
+    });
+}
+
+function createLeeMaterial(){
+    var leeTexture = new THREE.Texture();
+    var loader = new THREE.ImageLoader();
+    loader.load('assets/lee/lee_diffuse.jpg', function(image){
+        leeTexture.image = image;
+        leeTexture.needsUpdate = true;
+    });
+
+    var leeMaterial = new THREE.MeshPhongMaterial();
+    leeMaterial.map = leeTexture;
+
+    var normalMap = new THREE.Texture();
+    loader.load('assets/lee/lee_normal_tangent.jpg', function(image){
+        normalMap.image = image;
+        normalMap.needsUpdate = true;
+    });
+
+    leeMaterial.normalMap = normalMap;
+    leeMaterial.normalScale = new THREE.Vector2(1.0, 1.0);
+
+    var specularMap = new THREE.Texture();
+    loader.load('assets/lee/lee_spec.jpg', function(image){
+        specularMap.image = image;
+        specularMap.needsUpdate = true;
+    });
+
+    leeMaterial.specularMap = specularMap;
+    leeMaterial.specular = new THREE.Color(0x262626);
+
+    return leeMaterial;
+}
+
 function createCloudMaterial(){
     var cloudTexture = new THREE.Texture();
     var loader = new THREE.ImageLoader();
@@ -151,6 +202,7 @@ function init() {
     createPlane();
     createEarth();
     createClouds();
+    createLee();
     createEnviroment();
 
     document.body.appendChild( renderer.domElement );
