@@ -14,7 +14,7 @@ function createCamera(){
         45,
         window.innerWidth / window.innerHeight,
         0.1,//near plane
-        1000//far plane
+        1000000//far plane
     );
     camera.position.x = 90;
     camera.position.y = 32;
@@ -80,7 +80,7 @@ function createClouds(){
 }
 
 function createEnviroment(){
-    var envGeometry = new THREE.SphereGeometry(90,32,32);
+    var envGeometry = new THREE.SphereGeometry(9000,32,32);
 
     var envMaterial = new THREE.MeshBasicMaterial();
     envMaterial.map = THREE.ImageUtils.loadTexture('assets/galaxy_starfield.png');
@@ -106,6 +106,7 @@ function createLee(){
                 child.castShadow = true;
             }
         });
+        scene.add(object);
 
     });
 }
@@ -197,13 +198,58 @@ function init() {
     createRenderer();
     createCamera();
 
+    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+
+    geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
+    geometry.faces.splice(6,2);
+
+
+    var buildingMesh = new THREE.Mesh(geometry);
+
+    var cityGeometry = new THREE.Geometry();
+    for( var i = 0; i < 2000; i ++ ){
+        buildingMesh.position.x   = Math.floor( Math.random() * 200 - 100 ) * 10;
+        buildingMesh.position.z   = Math.floor( Math.random() * 200 - 100 ) * 10;
+        // put a random rotation
+        buildingMesh.rotation.y   = Math.random()*Math.PI*2;
+        // put a random scale
+        buildingMesh.scale.x  = Math.random() * Math.random() * Math.random() * Math.random() * 50 + 10;
+        buildingMesh.scale.y  = (Math.random() * Math.random() * Math.random() * buildingMesh.scale.x) * 8 + 8;
+        buildingMesh.scale.z  = buildingMesh.scale.x;
+
+            // merge it with cityGeometry - very important for performance
+           // THREE.GeometryUtils.merge( cityGeometry, buildingMesh );
+
+            cityGeometry.mergeMesh(buildingMesh);
+
+    }
+
+    var texture = new THREE.Texture();
+    var loader = new THREE.ImageLoader();
+    loader.load('assets/fair_clouds_1k.png', function(image){
+        texture.image = image;
+        texture.needsUpdate = true;
+    });
+
+    var material = new THREE.MeshLambertMaterial();
+    material.map = texture;
+
+    var final = new THREE.Mesh(cityGeometry);
+
+    console.log(cityGeometry, new THREE.MeshPhongMaterial());
+    //var cube = new THREE.Mesh( geometry );
+    scene.add( final );
+
+
+    /*
     createLight();
-    createBox();
-    createPlane();
-    createEarth();
-    createClouds();
+    //createBox();
+    //createPlane();
+    //createEarth();
+    //createClouds();
     createLee();
-    createEnviroment();
+    //createEnviroment();*/
 
     document.body.appendChild( renderer.domElement );
 
@@ -213,8 +259,8 @@ function init() {
 function render() {
     cameraControl.update();
 
-    scene.getObjectByName('earth').rotation.y += 0.005;
-    scene.getObjectByName('cloud').rotation.y += 0.003;
+    //scene.getObjectByName('earth').rotation.y += 0.005;
+    //scene.getObjectByName('cloud').rotation.y += 0.003;
 
     renderer.render(scene, camera);
     requestAnimationFrame(render);
