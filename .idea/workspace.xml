@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7a27d816-954a-4221-b6b9-5f77b70b4a82" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/scene.js" afterPath="$PROJECT_DIR$/js/scene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/mustang.js" afterPath="$PROJECT_DIR$/models/mustang.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,17 +13,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="scene.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="scene.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="545">
-              <caret line="220" column="37" lean-forward="false" selection-start-line="220" selection-start-column="37" selection-end-line="220" selection-end-column="37" />
+            <state relative-caret-position="777">
+              <caret line="211" column="21" lean-forward="true" selection-start-line="211" selection-start-column="21" selection-end-line="211" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mustang.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="mustang.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/mustang.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="613">
@@ -71,6 +70,7 @@
       <find>camera</find>
       <find>addWheel</find>
       <find>wheel</find>
+      <find>box</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -80,8 +80,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/js/scene.js" />
         <option value="$PROJECT_DIR$/models/mustang.js" />
+        <option value="$PROJECT_DIR$/js/scene.js" />
       </list>
     </option>
   </component>
@@ -183,12 +183,12 @@
       <option name="presentableId" value="Default" />
       <updated>1525775724429</updated>
       <workItem from="1525775726442" duration="4847000" />
-      <workItem from="1527889827703" duration="8327000" />
+      <workItem from="1527889827703" duration="8880000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14309000" />
+    <option name="totallyTimeSpent" value="14862000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1872" height="1039" extended-state="0" />
@@ -293,18 +293,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/scene.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="220" column="37" lean-forward="false" selection-start-line="220" selection-start-column="37" selection-end-line="220" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/mustang.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="613">
           <caret line="59" column="33" lean-forward="false" selection-start-line="59" selection-start-column="27" selection-end-line="59" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/scene.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="777">
+          <caret line="211" column="21" lean-forward="true" selection-start-line="211" selection-start-column="21" selection-end-line="211" selection-end-column="21" />
           <folding />
         </state>
       </provider>

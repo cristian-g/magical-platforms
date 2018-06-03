@@ -178,8 +178,8 @@ function createGround(ground_material) {
 }
 
 function createBoxes() {
-    for (var i = 0; i < 5; i++) {
-        var size = Math.random() * 2 + .5;
+    for (var i = 0; i < 1; i++) {
+        var size = 5.5;
         var box = new Physijs.SphereMesh(
             new THREE.SphereGeometry( size ),
             box_material
