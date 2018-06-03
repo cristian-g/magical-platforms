@@ -57,7 +57,7 @@
 {
 "DbgIndex" : 4,
 "DbgName"  : "black_carpaint",
-"colorDiffuse"  : [0.4000, 0.0588, 0.0588],
+"colorDiffuse"  : [0.0588, 0.4000, 0.0588],
 "colorSpecular"  : [0.8863, 0.8863, 0.8863],
 "opacity"  : 1.0,
 "specularCoef"  : 96.0784,

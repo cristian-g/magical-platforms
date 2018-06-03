@@ -178,10 +178,10 @@ function createGround(ground_material) {
 }
 
 function createBoxes() {
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < 5; i++) {
         var size = Math.random() * 2 + .5;
-        var box = new Physijs.BoxMesh(
-            new THREE.BoxGeometry( size, size, size ),
+        var box = new Physijs.SphereMesh(
+            new THREE.SphereGeometry( size ),
             box_material
         );
         box.castShadow = box.receiveShadow = true;
@@ -218,9 +218,11 @@ function createVehicle() {
 
             var wheel_material = new THREE.MeshFaceMaterial( wheel_materials );
 
+            var wheel2 = wheel.clone();
+            wheel2.rotateZ(180 * Math.PI / 180);
             for ( var i = 0; i < 4; i++ ) {
                 vehicle.addWheel(
-                    wheel,
+                    i % 2 === 0 ? wheel : wheel2,
                     wheel_material,
                     new THREE.Vector3(
                         i % 2 === 0 ? -1.6 : 1.6,
