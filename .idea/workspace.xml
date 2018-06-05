@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a27d816-954a-4221-b6b9-5f77b70b4a82" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/scene.js" afterPath="$PROJECT_DIR$/js/scene.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,8 +16,8 @@
       <file leaf-file-name="scene.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4924">
-              <caret line="577" column="2" lean-forward="false" selection-start-line="577" selection-start-column="2" selection-end-line="577" selection-end-column="2" />
+            <state relative-caret-position="188">
+              <caret line="482" column="56" lean-forward="false" selection-start-line="482" selection-start-column="56" selection-end-line="482" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -70,11 +69,12 @@
       <find>boxes</find>
       <find>wheel</find>
       <find>addWheel</find>
-      <find>box</find>
       <find>vehic</find>
       <find>input.direction</find>
       <find>camera</find>
       <find>add</find>
+      <find>vehicle</find>
+      <find>box</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -109,8 +109,8 @@
     <servers />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-3" />
-    <option name="y" value="121" />
+    <option name="x" value="37" />
+    <option name="y" value="107" />
     <option name="width" value="1872" />
     <option name="height" value="1039" />
   </component>
@@ -189,15 +189,15 @@
       <option name="presentableId" value="Default" />
       <updated>1525775724429</updated>
       <workItem from="1525775726442" duration="4847000" />
-      <workItem from="1527889827703" duration="18094000" />
+      <workItem from="1527889827703" duration="20247000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24076000" />
+    <option name="totallyTimeSpent" value="26229000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-3" y="121" width="1872" height="1039" extended-state="0" />
+    <frame x="37" y="107" width="1872" height="1039" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25641027" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -309,8 +309,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4924">
-          <caret line="577" column="2" lean-forward="false" selection-start-line="577" selection-start-column="2" selection-end-line="577" selection-end-column="2" />
+        <state relative-caret-position="188">
+          <caret line="482" column="56" lean-forward="false" selection-start-line="482" selection-start-column="56" selection-end-line="482" selection-end-column="56" />
           <folding />
         </state>
       </provider>

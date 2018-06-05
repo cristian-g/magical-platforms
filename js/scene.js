@@ -178,21 +178,19 @@ function createGround(ground_material) {
     scene.add( ground );
 }
 
-function createBoxes() {
-    for (var i = 0; i < 1; i++) {
-        var size = 5.5;
-        var box = new Physijs.SphereMesh(
-            new THREE.SphereGeometry( size ),
-            box_material
-        );
-        box.castShadow = box.receiveShadow = true;
-        box.position.set(
-            Math.random() * 25 - 50,
-            5,
-            Math.random() * 25 - 50
-        );
-        scene.add( box );
-    }
+function createBox(box_material, x, y, z) {
+    var size = 5.5;
+    var box = new Physijs.SphereMesh(
+        new THREE.SphereGeometry( size ),
+        box_material
+    );
+    box.castShadow = box.receiveShadow = true;
+    box.position.set(
+        x,
+        y,
+        z
+    );
+    scene.add( box );
 }
 
 function createVehicle() {
@@ -478,11 +476,16 @@ function init() {
 
 
     var cityGeometry = new THREE.Geometry();
-    for( var i = 0; i < 2000; i ++ ){
+
+    var lastY = -10;
+    for( var i = 0; i < 40; i ++ ){
         var scaleX = Math.random() * Math.random() * Math.random() * Math.random() * 50 + 10;
+        var newDifference = Math.floor(Math.random() * 2) + 1;
+        var newY = lastY - newDifference;
+        lastY = newY;
         var geometry = new THREE.BoxGeometry(
             scaleX,
-            (Math.random() * Math.random() * Math.random() * scaleX) * 8 + 8,
+            10,
             scaleX,
         );// put a random scale
         assignUVs(geometry);
@@ -490,11 +493,13 @@ function init() {
         //geometry.faces.splice(6,2);
         var buildingMesh = new THREE.Mesh(geometry);
 
-        var positionX   = Math.floor( Math.random() * 200 - 100 ) * 10;
-        var positionZ   = Math.floor( Math.random() * 200 - 100 ) * 10;
+        var positionX   = 0;
+        var positionY   = newY;
+        var positionZ   = i * 10;
         var rotationY   = Math.random()*Math.PI*2;
 
         buildingMesh.position.x   = positionX;
+        buildingMesh.position.y   = positionY;
         buildingMesh.position.z   = positionZ;
         // put a random rotation
         buildingMesh.rotation.y   = rotationY;
@@ -512,25 +517,16 @@ function init() {
 
         var lowPoly = new Physijs.BoxMesh( geometry, material_hidden, 0 );
         lowPoly.position.x   = positionX;
+        lowPoly.position.y   = positionY;
         lowPoly.position.z   = positionZ;
         // put a random rotation
         lowPoly.rotation.y   = rotationY;
 
         scene.add( lowPoly );
 
-
-
-        /*var box = new Physijs.SphereMesh(
-            new THREE.SphereGeometry( size ),
-            box_material
-        );
-        box.castShadow = box.receiveShadow = true;
-        box.position.set(
-            Math.random() * 25 - 50,
-            5,
-            Math.random() * 25 - 50
-        );
-        scene.add( box );*/
+        if (i == 20) {
+            createBox(box_material, positionX, positionY+10, positionZ);
+        }
     }
 
     var texture = new THREE.Texture();
@@ -555,8 +551,7 @@ function init() {
     //var cube = new THREE.Mesh( geometry );
     scene.add( final );
 
-    createGround(ground_material);
-    createBoxes(box_material);
+    //createGround(ground_material);
     createVehicle();
 
     createLight();
