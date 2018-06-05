@@ -46,9 +46,10 @@ function createCamera(){
         0.1,//near plane
         1000000//far plane
     );
-    camera.position.x = 90;
-    camera.position.y = 32;
-    camera.position.z = 32;
+    camera.position.x = 0;
+    camera.position.y = 30;
+    camera.position.z = -50;
+
     camera.lookAt(scene.position);
 
     //cameraControl = new THREE.OrbitControls(camera);
@@ -190,7 +191,7 @@ function createBoxes() {
             5,
             Math.random() * 25 - 50
         );
-        scene.add( box )
+        scene.add( box );
     }
 }
 
@@ -214,6 +215,7 @@ function createVehicle() {
                 10.5,
                 6000
             ));
+            //mesh.add(camera);
             scene.add( vehicle );
 
             var wheel_material = new THREE.MeshFaceMaterial( wheel_materials );
@@ -397,6 +399,32 @@ function createBuildingMaterial(loader) {
     return building_material;
 }
 
+function assignUVs(geometry) {
+    // Thanks to: https://stackoverflow.com/questions/20774648/three-js-generate-uv-coordinate
+
+    geometry.faceVertexUvs[0] = [];
+
+    geometry.faces.forEach(function(face) {
+
+        var components = ['x', 'y', 'z'].sort(function(a, b) {
+            return Math.abs(face.normal[a]) > Math.abs(face.normal[b]);
+        });
+
+        var v1 = geometry.vertices[face.a];
+        var v2 = geometry.vertices[face.b];
+        var v3 = geometry.vertices[face.c];
+
+        geometry.faceVertexUvs[0].push([
+            new THREE.Vector2(v1[components[0]], v1[components[1]]),
+            new THREE.Vector2(v2[components[0]], v2[components[1]]),
+            new THREE.Vector2(v3[components[0]], v3[components[1]])
+        ]);
+
+    });
+
+    geometry.uvsNeedUpdate = true;
+}
+
 
 
 function init() {
@@ -420,6 +448,7 @@ function init() {
                     input.steering += input.direction / 50;
                     if ( input.steering < -.6 ) input.steering = -.6;
                     if ( input.steering > .6 ) input.steering = .6;
+                    //camera.position.x += input.steering;
                 }
                 vehicle.setSteering( input.steering, 0 );
                 vehicle.setSteering( input.steering, 1 );
@@ -445,45 +474,84 @@ function init() {
 
     createCamera();
 
-    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-
-    geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
-    geometry.faces.splice(6,2);
 
 
-    var buildingMesh = new THREE.Mesh(geometry);
 
     var cityGeometry = new THREE.Geometry();
     for( var i = 0; i < 2000; i ++ ){
-        buildingMesh.position.x   = Math.floor( Math.random() * 200 - 100 ) * 10;
-        buildingMesh.position.z   = Math.floor( Math.random() * 200 - 100 ) * 10;
+        var scaleX = Math.random() * Math.random() * Math.random() * Math.random() * 50 + 10;
+        var geometry = new THREE.BoxGeometry(
+            scaleX,
+            (Math.random() * Math.random() * Math.random() * scaleX) * 8 + 8,
+            scaleX,
+        );// put a random scale
+        assignUVs(geometry);
+        //geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
+        //geometry.faces.splice(6,2);
+        var buildingMesh = new THREE.Mesh(geometry);
+
+        var positionX   = Math.floor( Math.random() * 200 - 100 ) * 10;
+        var positionZ   = Math.floor( Math.random() * 200 - 100 ) * 10;
+        var rotationY   = Math.random()*Math.PI*2;
+
+        buildingMesh.position.x   = positionX;
+        buildingMesh.position.z   = positionZ;
         // put a random rotation
-        buildingMesh.rotation.y   = Math.random()*Math.PI*2;
-        // put a random scale
-        buildingMesh.scale.x  = Math.random() * Math.random() * Math.random() * Math.random() * 50 + 10;
-        buildingMesh.scale.y  = (Math.random() * Math.random() * Math.random() * buildingMesh.scale.x) * 8 + 8;
-        buildingMesh.scale.z  = buildingMesh.scale.x;
+        buildingMesh.rotation.y   = rotationY;
 
             // merge it with cityGeometry - very important for performance
            // THREE.GeometryUtils.merge( cityGeometry, buildingMesh );
 
             cityGeometry.mergeMesh(buildingMesh);
 
+
+
+        var material_hidden = new THREE.MeshBasicMaterial();
+            //real_material = ...your dice material...;
+        material_hidden.visible = false;
+
+        var lowPoly = new Physijs.BoxMesh( geometry, material_hidden, 0 );
+        lowPoly.position.x   = positionX;
+        lowPoly.position.z   = positionZ;
+        // put a random rotation
+        lowPoly.rotation.y   = rotationY;
+
+        scene.add( lowPoly );
+
+
+
+        /*var box = new Physijs.SphereMesh(
+            new THREE.SphereGeometry( size ),
+            box_material
+        );
+        box.castShadow = box.receiveShadow = true;
+        box.position.set(
+            Math.random() * 25 - 50,
+            5,
+            Math.random() * 25 - 50
+        );
+        scene.add( box );*/
     }
 
     var texture = new THREE.Texture();
     var loader = new THREE.ImageLoader();
     loader.load('assets/fair_clouds_1k.png', function(image){
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+        texture.repeat.set(0.5, 1);
         texture.image = image;
         texture.needsUpdate = true;
     });
 
     var material = new THREE.MeshLambertMaterial();
+    //texture.repeat.set( 1, 1 );
+    // scale x2 horizontal
     material.map = texture;
+    material.map.repeat.set(0.5, 1);
+
 
     var final = new THREE.Mesh(cityGeometry, building_material);
 
-    console.log(cityGeometry, new THREE.MeshPhongMaterial());
+    //console.log(cityGeometry, new THREE.MeshPhongMaterial());
     //var cube = new THREE.Mesh( geometry );
     scene.add( final );
 
@@ -507,6 +575,8 @@ function init() {
     scene.simulate();
 }
 
+//var prueba = 0.1;
+
 render = function() {
     //cameraControl.update();
 
@@ -518,7 +588,21 @@ render = function() {
 
     requestAnimationFrame( render );
     if ( vehicle ) {
-        camera.position.copy( vehicle.mesh.position ).add( new THREE.Vector3( 40, 25, 40 ) );
+        /*if ( input.direction !== null ) {
+            if (input.steering < 0) {
+                prueba += 0.1;
+            }
+            else {
+                prueba -= 0.1;
+            }
+        }
+        else {
+            prueba -= 0.1;
+            if (prueba <= 0) {
+                prueba = 0;
+            }
+        }*/
+        camera.position.copy( vehicle.mesh.position ).add( new THREE.Vector3( 0, 30, -50 ) );
         camera.lookAt( vehicle.mesh.position );
 
         //light.target.position.copy( vehicle.mesh.position );
