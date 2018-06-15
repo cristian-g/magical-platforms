@@ -388,7 +388,7 @@ function createBoxMaterial(loader) {
 
 function createBuildingMaterial(loader) {
     building_material = Physijs.createMaterial(
-        new THREE.MeshLambertMaterial({ map: loader.load( 'images/building.jpg' ) }),
+        new THREE.MeshLambertMaterial({ map: loader.load( 'images/blocks2.jpg' ) }),
         .4, // low friction
         .6 // high restitution
     );
@@ -423,7 +423,11 @@ function assignUVs(geometry) {
     geometry.uvsNeedUpdate = true;
 }
 
+var blocksArray = [];
 
+var blockSeparation = 10;
+
+var maxBlocks = 40;
 
 function init() {
 
@@ -479,7 +483,7 @@ function init() {
     var cityGeometry = new THREE.Geometry();
 
     var lastY = -10;
-    for( var i = 0; i < 40; i ++ ){
+    for( var i = 0; i < maxBlocks; i ++ ){
         var scaleX = Math.random() * Math.random() * Math.random() * Math.random() * 50 + 10;
         var newDifference = Math.floor(Math.random() * 2) + 1;
         var newY = lastY - newDifference;
@@ -490,25 +494,12 @@ function init() {
             scaleX,
         );// put a random scale
         assignUVs(geometry);
-        //geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
-        //geometry.faces.splice(6,2);
-        var buildingMesh = new THREE.Mesh(geometry);
 
         var positionX   = 0;
         var positionY   = newY;
-        var positionZ   = i * 10;
+        var positionZ   = i * blockSeparation;
         var rotationY   = Math.random()*Math.PI*2;
 
-        buildingMesh.position.x   = positionX;
-        buildingMesh.position.y   = positionY;
-        buildingMesh.position.z   = positionZ;
-        // put a random rotation
-        buildingMesh.rotation.y   = rotationY;
-
-            // merge it with cityGeometry - very important for performance
-           // THREE.GeometryUtils.merge( cityGeometry, buildingMesh );
-
-            cityGeometry.mergeMesh(buildingMesh);
 
 
 
@@ -516,7 +507,7 @@ function init() {
             //real_material = ...your dice material...;
         material_hidden.visible = false;
 
-        var lowPoly = new Physijs.BoxMesh( geometry, material_hidden, 0 );
+        var lowPoly = new Physijs.BoxMesh( geometry, building_material, 0 );
         lowPoly.position.x   = positionX;
         lowPoly.position.y   = positionY;
         lowPoly.position.z   = positionZ;
@@ -524,6 +515,7 @@ function init() {
         lowPoly.rotation.y   = rotationY;
 
         scene.add( lowPoly );
+        blocksArray.push(lowPoly);
 
         if (i == 20) {
             createBox(box_material, positionX, positionY+10, positionZ);
@@ -539,18 +531,12 @@ function init() {
         texture.needsUpdate = true;
     });
 
-    var material = new THREE.MeshLambertMaterial();
-    //texture.repeat.set( 1, 1 );
-    // scale x2 horizontal
-    material.map = texture;
-    material.map.repeat.set(0.5, 1);
 
 
-    var final = new THREE.Mesh(cityGeometry, building_material);
 
     //console.log(cityGeometry, new THREE.MeshPhongMaterial());
     //var cube = new THREE.Mesh( geometry );
-    scene.add( final );
+    //scene.add( final );
 
     //createGround(ground_material);
     createVehicle();
@@ -574,6 +560,8 @@ function init() {
 //var prueba = 0.1;
 
 render = function() {
+
+
     //cameraControl.update();
 
     //scene.getObjectByName('earth').rotation.y += 0.005;
@@ -584,6 +572,17 @@ render = function() {
 
     requestAnimationFrame( render );
     if ( vehicle ) {
+
+
+        for (var i = 0; i < blocksArray.length; i++) {
+            if (blocksArray[i].position.z + blockSeparation < vehicle.mesh.position.z) {
+                blocksArray[i].position.y -= 0.1;
+                blocksArray[i].__dirtyPosition = true;
+            }
+        }
+
+
+
         /*if ( input.direction !== null ) {
             if (input.steering < 0) {
                 prueba += 0.1;
@@ -608,6 +607,12 @@ render = function() {
 
         jQuery('#points').html(Math.round(vehicle.mesh.position.z/10));
     }
+
+
+
+
+
+
     renderer.render( scene, camera );
     render_stats.update();
 }
