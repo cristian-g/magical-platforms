@@ -29,3 +29,7 @@ body {
 #heading a {
 	color: #4488ff;
 }
+#points {
+	position: fixed;
+	bottom: 0;
+}

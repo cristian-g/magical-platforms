@@ -430,6 +430,7 @@ function init() {
     //scene = new THREE.Scene();
     scene = new Physijs.Scene;
     scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
+    scene.fog = new THREE.FogExp2( 0xFFFFFF, 0.0055 );
 
     // Loader
     loader = new THREE.TextureLoader();
@@ -597,11 +598,15 @@ render = function() {
                 prueba = 0;
             }
         }*/
-        camera.position.copy( vehicle.mesh.position ).add( new THREE.Vector3( 0, 30, -50 ) );
+        // sacar front vector: sacar rotacion de la view matrix. luego multiplicas esa rotacion por vector (0, 1, 0), te dará el frontVector
+        // buscar en google: extractRotation
+        camera.position.copy( vehicle.mesh.position ).add( new THREE.Vector3( 0, 30/*lo colocamos aqui*/, -50 ) );
         camera.lookAt( vehicle.mesh.position );
 
         //light.target.position.copy( vehicle.mesh.position );
         //light.position.addVectors( light.target.position, new THREE.Vector3( 20, 20, -15 ) );
+
+        jQuery('#points').html(Math.round(vehicle.mesh.position.z/10));
     }
     renderer.render( scene, camera );
     render_stats.update();
