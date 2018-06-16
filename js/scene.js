@@ -15,9 +15,12 @@ var initScene, render,
 var input;
 
 function createRenderer(){
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     //renderer.setClearColor(0x000000, 1.0);
-    renderer.setClearColor (0xff0000, 1);
+    //renderer.setClearColor (0xff0000, 1);
+    renderer.setClearColor( 0x000000, 0 ); // the default
+
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
