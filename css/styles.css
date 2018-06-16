@@ -9,7 +9,7 @@ body {
 	font-family: Verdana;
 	font-size: 10pt;
 	overflow: hidden;
-	background-color: chartreuse;
+	background-color: blue;
 }
 
 #heading {
@@ -33,4 +33,15 @@ body {
 #points {
 	position: fixed;
 	bottom: 0;
+}
+#blocksScene, #backgroundColors {
+	position: fixed;
+	top: 0;
+}
+#backgroundColors {
+	z-index: -999;
+}
+#blocksScene {
+	z-index: 999;
+	display: none;
 }

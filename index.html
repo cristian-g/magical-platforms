@@ -1,18 +1,50 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/three.min.js"></script>
-    <script src="js/OrbitControls.js"></script>
-    <script src="js/OBJLoader.js"></script>
-    <script type="text/javascript" src="js/stats.js"></script>
-    <script type="text/javascript" src="js/simplex-noise.js"></script>
-    <script type="text/javascript" src="js/physi.js"></script>
-    <title>Home</title>
-</head>
-<body style="margin: 0; padding:0">
-    <div id="points"></div>
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+        <title>Vissonance - WebGL Audio Visualizer</title>
+        <link rel="stylesheet" type="text/css" href="css/styles.css" />
+        <link rel='stylesheet' type='text/css' href='css/ui.css'>
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/three.min.js"></script>
+        <script src="js/OrbitControls.js"></script>
+        <script src="js/OBJLoader.js"></script>
+        <script src="js/input.js"></script>
+        <script type="text/javascript" src="js/stats.js"></script>
+        <script type="text/javascript" src="js/simplex-noise.js"></script>
+        <script type="text/javascript" src="js/physi.js"></script>
+        <script src='js/background/external/Detector.js'></script>
+    </head>
+    <body>
+        <div id="intro-circle"><div id="content">
+            <b>Practical 4:<br>WebGL app</b>
+            <br><br>
+            By Cristian González and Marc Castells
+            <br>
+            <div id='defaultsong'>Start experience</div>
+            </div>
+        </div>
+        <div id="points"></div>
+        <div id="blocksScene" style="position: fixed"></div>
+        <div id="backgroundColors" style="position: fixed"></div>
         <script src="js/scene.js"></script>
-</body>
+    </body>
+    <footer>
+        <script src='js/background/AudioAnalyser.js'></script>
+        <script src='js/background/DragDropUpload.js'></script>
+        <script src='js/background/View.js'></script>
+        <script src='js/background/Controller.js'></script>
+        <script src='js/background/Spectrum.js'></script>
+
+        <script src='js/background/visualizers/HillFog.js'></script>
+        <script src='js/background/visualizers/Barred.js'></script>
+        <script src='js/background/visualizers/Tricentric.js'></script>
+        <script src='js/background/visualizers/Iris.js'></script>
+        <script src='js/background/visualizers/Fracture.js'></script>
+        <script src='js/background/visualizers/Siphon.js'></script>
+        <script src='js/background/visualizers/Silk.js'></script>
+
+        <script src='js/background/main.js'></script>
+    </footer>
 </html>

@@ -8,11 +8,9 @@ Physijs.scripts.worker = 'js/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
 var initScene, render,
-    ground_material, box_material, building_material,
+    ground_material, box_material, block_materials,
     render_stats, physics_stats, ground, light,
     vehicle_body, vehicle, loader;
-
-var input;
 
 function createRenderer(){
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -243,7 +241,8 @@ function createVehicle() {
             input = {
                 power: null,
                 direction: null,
-                steering: 0
+                steering: 0,
+                enabled: false
             };
             document.addEventListener('keydown', function( ev ) {
                 switch ( ev.keyCode ) {
@@ -367,17 +366,6 @@ function createEarthMaterial() {
 
 }
 
-function createGroundMaterial(loader) {
-    ground_material = Physijs.createMaterial(
-        new THREE.MeshLambertMaterial({ map: loader.load( 'images/road.jpg' ) }),
-        .8, // high friction
-        .4 // low restitution
-    );
-    ground_material.map.wrapS = ground_material.map.wrapT = THREE.RepeatWrapping;
-    ground_material.map.repeat.set( 3, 3 );
-    return ground_material;
-}
-
 function createBoxMaterial(loader) {
     box_material = Physijs.createMaterial(
         new THREE.MeshLambertMaterial({ map: loader.load( 'images/plywood.jpg' ) }),
@@ -389,15 +377,27 @@ function createBoxMaterial(loader) {
     return box_material;
 }
 
-function createBuildingMaterial(loader) {
-    building_material = Physijs.createMaterial(
-        new THREE.MeshLambertMaterial({ map: loader.load( 'images/blocks2.jpg' ) }),
+function createBlockMaterial(path, loader) {
+    var material = Physijs.createMaterial(
+        new THREE.MeshLambertMaterial({ map: loader.load( path ) }),
         .4, // low friction
         .6 // high restitution
     );
-    building_material.map.wrapS = building_material.map.wrapT = THREE.RepeatWrapping;
-    building_material.map.repeat.set( .25, .25 );
-    return building_material;
+    material.map.wrapS = material.map.wrapT = THREE.RepeatWrapping;
+    material.map.repeat.set( .25, .25 );
+    return material;
+}
+
+function createBlockMaterials(loader) {
+    var materialsArray = [];
+    materialsArray.push(createBlockMaterial('images/blocks_blue.jpg', loader));
+    materialsArray.push(createBlockMaterial('images/blocks_cyan.jpg', loader));
+    materialsArray.push(createBlockMaterial('images/blocks_green.jpg', loader));
+    materialsArray.push(createBlockMaterial('images/blocks_pink.jpg', loader));
+    materialsArray.push(createBlockMaterial('images/blocks_purple.jpg', loader));
+    materialsArray.push(createBlockMaterial('images/blocks_red.jpg', loader));
+    materialsArray.push(createBlockMaterial('images/blocks_yellow.jpg', loader));
+    return materialsArray;
 }
 
 function assignUVs(geometry) {
@@ -441,15 +441,14 @@ function init() {
 
     // Loader
     loader = new THREE.TextureLoader();
-    ground_material = createGroundMaterial(loader);
     box_material = createBoxMaterial(loader);
-    building_material = createBuildingMaterial(loader);
+    block_materials = createBlockMaterials((loader));
 
     scene.addEventListener(
         'update',
         function() {
 
-            if ( input && vehicle ) {
+            if ( input && input.enabled && vehicle ) {
                 if ( input.direction !== null ) {
                     input.steering += input.direction / 50;
                     if ( input.steering < -.6 ) input.steering = -.6;
@@ -485,23 +484,34 @@ function init() {
 
     var cityGeometry = new THREE.Geometry();
 
-    var lastY = -10;
+    var lastY = -20;
     for( var i = 0; i < maxBlocks; i ++ ){
-        var scaleX = Math.random() * Math.random() * Math.random() * Math.random() * 50 + 10;
         var newDifference = Math.floor(Math.random() * 2) + 1;
         var newY = lastY - newDifference;
         lastY = newY;
-        var geometry = new THREE.BoxGeometry(
+
+
+
+        /*var geometry = new THREE.BoxGeometry(
             scaleX,
             10,
             scaleX,
-        );// put a random scale
+        );// put a random scale*/
+
+        var tileSize = Math.floor(Math.random() * 3) + 3;
+        var geometry = new THREE.CylinderGeometry( 1, tileSize*3, tileSize*3, 4 );
+        //var material = new THREE.MeshBasicMaterial( {color: 0xffff00 , wireframe:true} );
+        //var cylinder = new THREE.Mesh( geometry, material );
+
+
+
         assignUVs(geometry);
 
         var positionX   = 0;
         var positionY   = newY;
         var positionZ   = i * blockSeparation;
         var rotationY   = Math.random()*Math.PI*2;
+        var rotationX   = Math.PI;
 
 
 
@@ -510,10 +520,11 @@ function init() {
             //real_material = ...your dice material...;
         material_hidden.visible = false;
 
-        var lowPoly = new Physijs.BoxMesh( geometry, building_material, 0 );
+        var lowPoly = new Physijs.ConvexMesh( geometry, block_materials[1], 0 );
         lowPoly.position.x   = positionX;
         lowPoly.position.y   = positionY;
         lowPoly.position.z   = positionZ;
+        lowPoly.rotation.x   = rotationX;
         // put a random rotation
         lowPoly.rotation.y   = rotationY;
 
@@ -553,7 +564,7 @@ function init() {
     createLee();
     //createEnviroment();*/
 
-    document.body.appendChild( renderer.domElement );
+    document.getElementById('blocksScene').appendChild( renderer.domElement );
 
     //render();
     requestAnimationFrame( render );
@@ -608,7 +619,7 @@ render = function() {
         //light.target.position.copy( vehicle.mesh.position );
         //light.position.addVectors( light.target.position, new THREE.Vector3( 20, 20, -15 ) );
 
-        jQuery('#points').html(Math.round(vehicle.mesh.position.z/10));
+        jQuery('#points').html(Math.round(vehicle.mesh.position.z/10) + ', ' + vehicle.mesh.position.y);
     }
 
 
