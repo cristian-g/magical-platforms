@@ -1,27 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7a27d816-954a-4221-b6b9-5f77b70b4a82" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/AudioAnalyser.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/Controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/DragDropUpload.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/Spectrum.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/View.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/external/Detector.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/main.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/visualizers/Barred.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/visualizers/Fracture.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/visualizers/HillFog.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/visualizers/Iris.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/visualizers/Silk.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/visualizers/Siphon.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/background/visualizers/Tricentric.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/input.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/styles.css" afterPath="$PROJECT_DIR$/css/styles.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/scene.js" afterPath="$PROJECT_DIR$/js/scene.js" />
-    </list>
+    <list default="true" id="7a27d816-954a-4221-b6b9-5f77b70b4a82" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -255,6 +235,16 @@
             <path>
               <item name="SI-Projecte-Final" type="b2602c69:ProjectViewProjectNode" />
               <item name="SI-Projecte-Final" type="462c0819:PsiDirectoryNode" />
+              <item name="fonts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SI-Projecte-Final" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SI-Projecte-Final" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SI-Projecte-Final" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SI-Projecte-Final" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -319,18 +309,17 @@
       <workItem from="1527889827703" duration="20549000" />
       <workItem from="1528278144914" duration="892000" />
       <workItem from="1528294310115" duration="352000" />
-      <workItem from="1529092004786" duration="16138000" />
+      <workItem from="1529092004786" duration="16519000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43913000" />
+    <option name="totallyTimeSpent" value="44294000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="643" y="22" width="1277" height="1140" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2631167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2631167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
