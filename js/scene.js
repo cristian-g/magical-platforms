@@ -506,7 +506,6 @@ function init() {
         else {
             var positionX   = Math.random() * (20 - 0) -10;
         }
-        var positionX   = Math.random() * (20 - 0) -10;
         var positionZ   = i * blockSeparation;
         var positionY   = firstY - (heightRatio*positionZ);
         var rotationY   = Math.random()*Math.PI*2;
