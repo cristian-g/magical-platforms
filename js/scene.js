@@ -204,6 +204,7 @@ function createVehicle() {
                 new THREE.MeshFaceMaterial( car_materials )
             );
             mesh.position.y = 2;
+            mesh.position.z = 3;
             mesh.castShadow = mesh.receiveShadow = true;
 
             vehicle = new Physijs.Vehicle(mesh, new Physijs.VehicleTuning(
@@ -432,10 +433,12 @@ var blockSeparation = 10;
 
 var maxBlocks = 40;
 
-var firstY = -20;
+var points = 0;
+
+var firstY = -30;
 var heightRatio = 0.2;
-var blockHeight = 3;
-var deathMargin = 300;
+var blockHeight = 10;
+var deathMargin = 200;
 var deathDetected = false;
 
 function init() {
@@ -487,7 +490,7 @@ function init() {
 
     for (var i = 0; i < maxBlocks; i ++) {
 
-        var tileSize = Math.floor(Math.random() * 3) + 3;
+        var tileSize = Math.floor(Math.random() * 2) + 4;
         var geometry = new THREE.CylinderGeometry( 1, tileSize*3, blockHeight, 4 );
 
         assignUVs(geometry);
@@ -600,8 +603,25 @@ render = function() {
         //light.target.position.copy( vehicle.mesh.position );
         //light.position.addVectors( light.target.position, new THREE.Vector3( 20, 20, -15 ) );
 
-        var deathY = firstY - (vehicle.mesh.position.z * heightRatio) + blockHeight;
-        jQuery('#points').html(Math.round(vehicle.mesh.position.z/10) + ', ' + vehicle.mesh.position.y + '. DEATH AT: ' + deathY);
+        var deathY = firstY - (vehicle.mesh.position.z * heightRatio) + blockHeight - deathMargin;
+        if (vehicle.mesh.position.y < deathY && !deathDetected) {
+            deathDetected = true;
+            swal({
+                title: "Game over",
+                text: 'You earned ' + points + ' points',
+                button: "Play again",
+                closeOnEsc: false,
+                closeOnClickOutside: false
+            }).then(function(isConfirm) {
+                if (isConfirm) {
+                    window.location.reload(false);
+                }
+            });
+        }
+        if (!deathDetected) {
+            points = Math.round(vehicle.mesh.position.z/10);
+            jQuery('#points').html(points + ' points');
+        }
     }
 
 
