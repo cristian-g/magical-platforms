@@ -434,7 +434,7 @@ var blocksArray = [];
 
 var blockSeparation = 10;
 
-var maxBlocks = 40;
+var maxBlocks = 20;
 
 var points = 0;
 
@@ -443,6 +443,8 @@ var heightRatio = 0.2;
 var blockHeight = 10;
 var deathMargin = 200;
 var deathDetected = false;
+
+var lastBlockI = 0;
 
 function init() {
 
@@ -498,8 +500,12 @@ function init() {
 
         assignUVs(geometry);
 
-        var positionX   = Math.random() * (20 - 0) -10;
-        var positionY   = newY;
+        if (i == 0 || i == 1) {
+            var positionX   = 0;
+        }
+        else {
+            var positionX   = Math.random() * (20 - 0) -10;
+        }
         var positionZ   = i * blockSeparation;
         var positionY   = firstY - (heightRatio*positionZ);
         var rotationY   = Math.random()*Math.PI*2;
@@ -523,6 +529,8 @@ function init() {
             createBox(box_material, positionX, positionY+10, positionZ);
         }
     }
+
+    lastBlockI = maxBlocks - 1;
 
     var texture = new THREE.Texture();
     var loader = new THREE.ImageLoader();
@@ -564,6 +572,7 @@ function init() {
 render = function() {
 
 
+
     //cameraControl.update();
 
     //scene.getObjectByName('earth').rotation.y += 0.005;
@@ -575,31 +584,47 @@ render = function() {
     requestAnimationFrame( render );
     if ( vehicle ) {
 
-        if (reference_pos > 10){
+        var movingVelocity = vehicle.mesh.position.z * 0.0002 + 0.005;
+        var maxAmplitude = vehicle.mesh.position.z * 0.1 + 10;
+        if (maxAmplitude > 60) {
+            maxAmplitude = 60;
+        }
+
+        if (reference_pos > maxAmplitude){
             up = false;
         }
 
-        if (reference_pos < -10){
+        if (reference_pos < (-1)*maxAmplitude){
             up = true
         }
 
         for (var i = 0; i < blocksArray.length; i++) {
             var falling = false;
             if (blocksArray[i].position.z + blockSeparation < vehicle.mesh.position.z) {
-                blocksArray[i].position.y -= 0.1;
+                blocksArray[i].position.y -= 0.5;// Falling velocity
                 blocksArray[i].__dirtyPosition = true;
-                falling =true;
+                falling = true;
+                if (blocksArray[i].position.z + (blockSeparation * 3) < vehicle.mesh.position.z) {
+                    lastBlockI++;
+                    var positionZ = lastBlockI * blockSeparation;
+                    var positionY = firstY - (heightRatio * positionZ);
+                    blocksArray[i].position.z = positionZ;
+                    blocksArray[i].position.y = positionY;
+                }
+            }
+            if (i == 0 || i == 1) {
+                continue;
             }
 
-            if (!falling && i%5 == 0 && up ){
-                reference_pos += 0.01;
-                blocksArray[i].position.y += 0.1;
+            if (!falling && i%3 == 0 && up ){
+                reference_pos += movingVelocity;
+                blocksArray[i].position.y += movingVelocity;
                 blocksArray[i].__dirtyPosition = true;
             }
 
-            if (!falling && i%5 == 0 && !up ){
-                reference_pos -= 0.01;
-                blocksArray[i].position.y -= 0.1;
+            if (!falling && i%3 == 0 && !up ){
+                reference_pos -= movingVelocity;
+                blocksArray[i].position.y -= movingVelocity;
                 blocksArray[i].__dirtyPosition = true;
             }
         }
