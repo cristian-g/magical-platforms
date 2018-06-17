@@ -616,13 +616,14 @@ render = function() {
                     blocksArray[i].position.y = positionY;
 
                     if (i == 5){
-                        ball1.position.set(blocksArray[5].position.x, positionY + 10, positionZ);
+                        ball1.position.set(blocksArray[5].position.x, positionY + 20, positionZ);
+                        ball1.__dirtyPosition = true;
                         console.log("hola");
                     }
                     if (i == 15){
 
-                        ball2.position.set(blocksArray[15].position.x, positionY + 10, positionZ);
-
+                        ball2.position.set(blocksArray[15].position.x, positionY + 20, positionZ);
+                        ball2.__dirtyPosition = true;
                     }
                 }
             }
