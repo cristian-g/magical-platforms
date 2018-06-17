@@ -207,6 +207,7 @@ function createVehicle() {
                 new THREE.MeshFaceMaterial( car_materials )
             );
             mesh.position.y = 2;
+            mesh.position.z = 3;
             mesh.castShadow = mesh.receiveShadow = true;
 
             vehicle = new Physijs.Vehicle(mesh, new Physijs.VehicleTuning(
@@ -433,13 +434,17 @@ var blocksArray = [];
 
 var blockSeparation = 10;
 
-var maxBlocks = 40;
+var maxBlocks = 20;
 
-var firstY = -20;
+var points = 0;
+
+var firstY = -30;
 var heightRatio = 0.2;
-var blockHeight = 3;
-var deathMargin = 300;
+var blockHeight = 10;
+var deathMargin = 200;
 var deathDetected = false;
+
+var lastBlockI = 0;
 
 function init() {
 
@@ -490,11 +495,17 @@ function init() {
 
     for (var i = 0; i < maxBlocks; i ++) {
 
-        var tileSize = Math.floor(Math.random() * 3) + 3;
+        var tileSize = Math.floor(Math.random() * 2) + 4;
         var geometry = new THREE.CylinderGeometry( 1, tileSize*3, blockHeight, 4 );
 
         assignUVs(geometry);
 
+        if (i == 0 || i == 1) {
+            var positionX   = 0;
+        }
+        else {
+            var positionX   = Math.random() * (20 - 0) -10;
+        }
         var positionX   = Math.random() * (20 - 0) -10;
         var positionZ   = i * blockSeparation;
         var positionY   = firstY - (heightRatio*positionZ);
@@ -519,6 +530,8 @@ function init() {
             createBox(box_material, positionX, positionY+10, positionZ);
         }
     }
+
+    lastBlockI = maxBlocks - 1;
 
     var texture = new THREE.Texture();
     var loader = new THREE.ImageLoader();
@@ -560,6 +573,7 @@ function init() {
 render = function() {
 
 
+
     //cameraControl.update();
 
     //scene.getObjectByName('earth').rotation.y += 0.005;
@@ -571,31 +585,47 @@ render = function() {
     requestAnimationFrame( render );
     if ( vehicle ) {
 
-        if (reference_pos > 10){
+        var movingVelocity = vehicle.mesh.position.z * 0.0002 + 0.005;
+        var maxAmplitude = vehicle.mesh.position.z * 0.1 + 10;
+        if (maxAmplitude > 60) {
+            maxAmplitude = 60;
+        }
+
+        if (reference_pos > maxAmplitude){
             up = false;
         }
 
-        if (reference_pos < -10){
+        if (reference_pos < (-1)*maxAmplitude){
             up = true
         }
 
         for (var i = 0; i < blocksArray.length; i++) {
             var falling = false;
             if (blocksArray[i].position.z + blockSeparation < vehicle.mesh.position.z) {
-                blocksArray[i].position.y -= 0.1;
+                blocksArray[i].position.y -= 0.5;// Falling velocity
                 blocksArray[i].__dirtyPosition = true;
-                falling =true;
+                falling = true;
+                if (blocksArray[i].position.z + (blockSeparation * 3) < vehicle.mesh.position.z) {
+                    lastBlockI++;
+                    var positionZ = lastBlockI * blockSeparation;
+                    var positionY = firstY - (heightRatio * positionZ);
+                    blocksArray[i].position.z = positionZ;
+                    blocksArray[i].position.y = positionY;
+                }
+            }
+            if (i == 0 || i == 1) {
+                continue;
             }
 
-            if (!falling && i%5 == 0 && up ){
-                reference_pos += 0.01;
-                blocksArray[i].position.y += 0.1;
+            if (!falling && i%3 == 0 && up ){
+                reference_pos += movingVelocity;
+                blocksArray[i].position.y += movingVelocity;
                 blocksArray[i].__dirtyPosition = true;
             }
 
-            if (!falling && i%5 == 0 && !up ){
-                reference_pos -= 0.01;
-                blocksArray[i].position.y -= 0.1;
+            if (!falling && i%3 == 0 && !up ){
+                reference_pos -= movingVelocity;
+                blocksArray[i].position.y -= movingVelocity;
                 blocksArray[i].__dirtyPosition = true;
             }
         }
@@ -622,8 +652,25 @@ render = function() {
         //light.target.position.copy( vehicle.mesh.position );
         //light.position.addVectors( light.target.position, new THREE.Vector3( 20, 20, -15 ) );
 
-        var deathY = firstY - (vehicle.mesh.position.z * heightRatio) + blockHeight;
-        jQuery('#points').html(Math.round(vehicle.mesh.position.z/10) + ', ' + vehicle.mesh.position.y + '. DEATH AT: ' + deathY);
+        var deathY = firstY - (vehicle.mesh.position.z * heightRatio) + blockHeight - deathMargin;
+        if (vehicle.mesh.position.y < deathY && !deathDetected) {
+            deathDetected = true;
+            swal({
+                title: "Game over",
+                text: 'You earned ' + points + ' points',
+                button: "Play again",
+                closeOnEsc: false,
+                closeOnClickOutside: false
+            }).then(function(isConfirm) {
+                if (isConfirm) {
+                    window.location.reload(false);
+                }
+            });
+        }
+        if (!deathDetected) {
+            points = Math.round(vehicle.mesh.position.z/10);
+            jQuery('#points').html(points + ' points');
+        }
     }
 
 

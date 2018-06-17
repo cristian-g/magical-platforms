@@ -46,6 +46,7 @@ function DragDropUpload() {
                             input.enabled = true;
                             $( '#intro-circle' ).fadeOut();
                             $( '#blocksScene' ).fadeIn();
+                            $( '#points' ).fadeIn();
                             return;
                         }
 

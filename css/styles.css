@@ -32,7 +32,13 @@ body {
 }
 #points {
 	position: fixed;
-	bottom: 0;
+	top: 0;
+	right: 0;
+	font-size: 3vh;
+	background: white;
+	color: black;
+	padding: 10px;
+	display: none;
 }
 #blocksScene, #backgroundColors {
 	position: fixed;
