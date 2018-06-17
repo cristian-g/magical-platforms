@@ -2,21 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a27d816-954a-4221-b6b9-5f77b70b4a82" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LICENSE" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/earth_normalmap_flat2k.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/earthmap2k.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/earthspec2k.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/fair_clouds_1k.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/galaxy_starfield.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/lee/lee.obj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/lee/lee_diffuse.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/lee/lee_normal_tangent.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/lee/lee_spec.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/images/blocks.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/images/blocks2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/images/building.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/images/road.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/background/DragDropUpload.js" afterPath="$PROJECT_DIR$/js/background/DragDropUpload.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/scene.js" afterPath="$PROJECT_DIR$/js/scene.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,8 +16,8 @@
       <file leaf-file-name="scene.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="472">
-              <caret line="431" column="84" lean-forward="false" selection-start-line="431" selection-start-column="84" selection-end-line="431" selection-end-column="84" />
+            <state relative-caret-position="367">
+              <caret line="424" column="0" lean-forward="false" selection-start-line="424" selection-start-column="0" selection-end-line="424" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -320,12 +305,12 @@
       <workItem from="1527889827703" duration="20549000" />
       <workItem from="1528278144914" duration="892000" />
       <workItem from="1528294310115" duration="352000" />
-      <workItem from="1529092004786" duration="34827000" />
+      <workItem from="1529092004786" duration="35319000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58897000" />
+    <option name="totallyTimeSpent" value="59389000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="615" y="37" width="1295" height="1098" extended-state="0" />
@@ -748,8 +733,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="472">
-          <caret line="431" column="84" lean-forward="false" selection-start-line="431" selection-start-column="84" selection-end-line="431" selection-end-column="84" />
+        <state relative-caret-position="367">
+          <caret line="424" column="0" lean-forward="false" selection-start-line="424" selection-start-column="0" selection-end-line="424" selection-end-column="0" />
           <folding />
         </state>
       </provider>

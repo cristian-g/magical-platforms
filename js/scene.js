@@ -422,7 +422,6 @@ render = function() {
                     if (i == 4){
                         ball1.position.set(blocksArray[5].position.x, positionY + 20, positionZ);
                         ball1.__dirtyPosition = true;
-                        ball1.state.vel.set(0, 0, 0);
                     }
                     if (i == 11){
                         ball2.position.set(blocksArray[15].position.x, positionY + 20, positionZ);
