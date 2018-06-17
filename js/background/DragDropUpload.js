@@ -45,8 +45,10 @@ function DragDropUpload() {
                             clearInterval(counter);
                             input.enabled = true;
                             $( '#intro-circle' ).fadeOut();
-                            $( '#blocksScene' ).fadeIn();
-                            $( '#points' ).fadeIn();
+                            setTimeout(function () {
+                                $( '#blocksScene' ).fadeIn();
+                                $( '#points' ).fadeIn();
+                            }, 1000);
                             return;
                         }
 
@@ -72,11 +74,7 @@ function DragDropUpload() {
                     var data = fileEvent.target.result;
                     audioAnalyser.makeAudio( data );
                 };
-                //console.log(droppedFiles[0]);
                 reader.readAsArrayBuffer( droppedFiles[0] );
-                //var file = new File("jdjfjfd.mp3", null);
-                //reader.readAsDataURL(file);
-
             }
 
             function dragover_handler( e ) {

@@ -4,11 +4,13 @@ var renderer;
 var scene;
 var camera;
 
-var up = true;
+var up = false;
+
 var reference_pos = 0;
 
 var ball1;
 var ball2;
+var ball3;
 
 Physijs.scripts.worker = 'js/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
@@ -20,8 +22,6 @@ var initScene, render,
 
 function createRenderer(){
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    //renderer.setClearColor(0x000000, 1.0);
-    //renderer.setClearColor (0xff0000, 1);
     renderer.setClearColor( 0x000000, 0 ); // the default
 
 
@@ -58,131 +58,18 @@ function createCamera(){
     camera.position.z = -50;
 
     camera.lookAt(scene.position);
-
-    //cameraControl = new THREE.OrbitControls(camera);
 }
 
 function createLight() {
-    /*var directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-    directionalLight.position.set(100, 10, -50);
-    directionalLight.name = 'directional';
-    scene.add(directionalLight);*/
     // Light
     light = new THREE.DirectionalLight( 0xFFFFFF );
     light.position.set( 20, 20, -15 );
     light.target.position.copy( scene.position );
-    /*light.castShadow = true;
-    light.shadowCameraLeft = -150;
-    light.shadowCameraTop = -150;
-    light.shadowCameraRight = 150;
-    light.shadowCameraBottom = 150;
-    light.shadowCameraNear = 20;
-    light.shadowCameraFar = 400;
-    light.shadowBias = -.0001
-    light.shadowMapWidth = light.shadowMapHeight = 2048;
-    light.shadowDarkness = .7;*/
     scene.add( light );
 
     var ambirentLight = new THREE.AmbientLight(0x111111);
     scene.add(ambirentLight);
 
-}
-
-function createBox(){
-    var boxGeometry = new THREE.BoxGeometry(6,4,6);
-    var boxMaterial = createEarthMaterial();
-        //new THREE.MeshLambertMaterial({color: "red"});
-
-    var box = new THREE.Mesh(boxGeometry, boxMaterial);
-    box.castShadow = true;
-    scene.add(box);
-
-}
-
-function createPlane() {
-    var planeGeometry = new THREE.PlaneGeometry(20,20);
-    var planeMaterial = new THREE.MeshLambertMaterial(
-        {color: 0xcccccc}
-    );
-    var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.receiveShadow = true;
-    plane.rotation.x = -0.5 * Math.PI;
-    plane.position.y = -2;
-    scene.add(plane);
-
-}
-
-function createEarth(){
-    var sphereGeometry = new THREE.SphereGeometry(15, 30, 30);
-    var sphereMaterial = new createEarthMaterial();
-    var earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    earthMesh.name = 'earth';
-
-    scene.add(earthMesh);
-}
-
-function createClouds(){
-    var sphereGeometry = new THREE.SphereGeometry(15.1, 30, 30);
-    var sphereMaterial = new createCloudMaterial();
-    var cloudMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    cloudMesh.name = 'cloud';
-
-    scene.add(cloudMesh);
-}
-
-function createEnviroment(){
-    var envGeometry = new THREE.SphereGeometry(9000,32,32);
-
-    var envMaterial = new THREE.MeshBasicMaterial();
-    envMaterial.map = THREE.ImageUtils.loadTexture('assets/galaxy_starfield.png');
-    envMaterial.side = THREE.BackSide;
-
-    var envMesh = new THREE.Mesh(envGeometry, envMaterial);
-
-    scene.add(envMesh)
-}
-
-function createLee(){
-    var material = new createLeeMaterial();
-
-    var loader = new THREE.OBJLoader();
-
-    loader.load('assets/lee/lee.obj', function(object){
-
-        object.traverse(function (child) {
-
-            if (child instanceof THREE.Mesh){
-                child.material = material;
-                child.receiveShadow = true;
-                child.castShadow = true;
-            }
-        });
-        scene.add(object);
-
-    });
-}
-
-function createGround(ground_material) {
-    var NoiseGen = new SimplexNoise;
-
-    var ground_geometry = new THREE.PlaneGeometry( 300, 300, 100, 100 );
-    for ( var i = 0; i < ground_geometry.vertices.length; i++ ) {
-        var vertex = ground_geometry.vertices[i];
-        //vertex.y = NoiseGen.noise( vertex.x / 30, vertex.z / 30 ) * 1;
-    }
-    ground_geometry.computeFaceNormals();
-    ground_geometry.computeVertexNormals();
-
-    // If your plane is not square as far as face count then the HeightfieldMesh
-    // takes two more arguments at the end: # of x faces and # of z faces that were passed to THREE.PlaneMaterial
-    ground = new Physijs.HeightfieldMesh(
-        ground_geometry,
-        ground_material,
-        0 // mass
-    );
-    ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
-    scene.add( ground );
 }
 
 function createBox(box_material, x, y, z) {
@@ -223,7 +110,6 @@ function createVehicle() {
                 10.5,
                 6000
             ));
-            //mesh.add(camera);
             scene.add( vehicle );
 
             var wheel_material = new THREE.MeshFaceMaterial( wheel_materials );
@@ -327,54 +213,6 @@ function createLeeMaterial(){
     return leeMaterial;
 }
 
-function createCloudMaterial(){
-    var cloudTexture = new THREE.Texture();
-    var loader = new THREE.ImageLoader();
-    loader.load('assets/fair_clouds_1k.png', function(image){
-        cloudTexture.image = image;
-        cloudTexture.needsUpdate = true;
-    });
-
-    var cloudMaterial = new THREE.MeshLambertMaterial();
-    cloudMaterial.map = cloudTexture;
-    cloudMaterial.transparent = true;
-
-    return cloudMaterial;
-}
-
-function createEarthMaterial() {
-  var earthTexture = new THREE.Texture();
-  var loader = new THREE.ImageLoader();
-  loader.load('assets/earthmap2k.jpg', function(image){
-    earthTexture.image = image;
-    earthTexture.needsUpdate = true;
-  });
-
-  var earthMaterial = new THREE.MeshPhongMaterial();
-  earthMaterial.map = earthTexture;
-
-  var normalMap = new THREE.Texture();
-  loader.load('assets/earth_normalmap_flat2k.jpg', function(image){
-      normalMap.image = image;
-      normalMap.needsUpdate = true;
-  });
-
-  earthMaterial.normalMap = normalMap;
-  earthMaterial.normalScale = new THREE.Vector2(1.0, 1.0);
-
-  var specularMap = new THREE.Texture();
-  loader.load('assets/earthspec2k.jpg', function(image){
-      specularMap.image = image;
-      specularMap.needsUpdate = true;
-  });
-
-  earthMaterial.specularMap = specularMap;
-  earthMaterial.specular = new THREE.Color(0x262626);
-
-    return earthMaterial;
-
-}
-
 function createBoxMaterial(loader) {
     box_material = Physijs.createMaterial(
         new THREE.MeshLambertMaterial({ map: loader.load( 'images/plywood.jpg' ) }),
@@ -472,7 +310,6 @@ function init() {
                     input.steering += input.direction / 50;
                     if ( input.steering < -.6 ) input.steering = -.6;
                     if ( input.steering > .6 ) input.steering = .6;
-                    //camera.position.x += input.steering;
                 }
                 vehicle.setSteering( input.steering, 0 );
                 vehicle.setSteering( input.steering, 1 );
@@ -531,64 +368,31 @@ function init() {
         blocksArray.push(lowPoly);
     }
 
-    ball1 = createBox(box_material, blocksArray[5].position.x, blocksArray[5].position.y + 10, blocksArray[5].position.z);
-    ball2 = createBox(box_material, blocksArray[15].position.x, blocksArray[15].position.y + 10, blocksArray[15].position.z);
+    ball1 = createBox(box_material, blocksArray[4].position.x, blocksArray[4].position.y + 10, blocksArray[4].position.z);
+    ball2 = createBox(box_material, blocksArray[11].position.x, blocksArray[11].position.y + 10, blocksArray[11].position.z);
+    ball3 = createBox(box_material, blocksArray[17].position.x, blocksArray[17].position.y + 10, blocksArray[17].position.z);
 
     lastBlockI = maxBlocks - 1;
 
     var texture = new THREE.Texture();
     var loader = new THREE.ImageLoader();
-    loader.load('assets/fair_clouds_1k.png', function(image){
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-        texture.repeat.set(0.5, 1);
-        texture.image = image;
-        texture.needsUpdate = true;
-    });
 
-
-
-
-    //console.log(cityGeometry, new THREE.MeshPhongMaterial());
-    //var cube = new THREE.Mesh( geometry );
-    //scene.add( final );
-
-    //createGround(ground_material);
     createVehicle();
 
     createLight();
-    /*
-    //createBox();
-    //createPlane();
-    //createEarth();
-    //createClouds();
-    createLee();
-    //createEnviroment();*/
 
     document.getElementById('blocksScene').appendChild( renderer.domElement );
 
-    //render();
     requestAnimationFrame( render );
     scene.simulate();
 }
 
-//var prueba = 0.1;
-
 render = function() {
-
-
-
-    //cameraControl.update();
-
-    //scene.getObjectByName('earth').rotation.y += 0.005;
-    //scene.getObjectByName('cloud').rotation.y += 0.003;
-
-    //renderer.render(scene, camera);
-    //requestAnimationFrame(render);
 
     requestAnimationFrame( render );
     if ( vehicle ) {
 
-        var movingVelocity = 4* vehicle.mesh.position.z * 0.0002 + 0.005;
+        var movingVelocity = vehicle.mesh.position.z * 0.0002 + 0.005;
         var maxAmplitude = vehicle.mesh.position.z * 0.1 + 10;
         if (maxAmplitude > 60) {
             maxAmplitude = 60;
@@ -615,15 +419,18 @@ render = function() {
                     blocksArray[i].position.z = positionZ;
                     blocksArray[i].position.y = positionY;
 
-                    if (i == 5){
+                    if (i == 4){
                         ball1.position.set(blocksArray[5].position.x, positionY + 20, positionZ);
                         ball1.__dirtyPosition = true;
-                        console.log("hola");
+                        ball1.state.vel.set(0, 0, 0);
                     }
-                    if (i == 15){
-
+                    if (i == 11){
                         ball2.position.set(blocksArray[15].position.x, positionY + 20, positionZ);
                         ball2.__dirtyPosition = true;
+                    }
+                    if (i == 17){
+                        ball3.position.set(blocksArray[15].position.x, positionY + 20, positionZ);
+                        ball3.__dirtyPosition = true;
                     }
                 }
             }
@@ -631,59 +438,31 @@ render = function() {
                 continue;
             }
 
-            if (!falling && i%3 == 0 && i%6!=0 && up ){
+            if (!falling && i%4 == 0 && up ){
                 reference_pos += movingVelocity;
                 blocksArray[i].position.y += movingVelocity;
                 blocksArray[i].__dirtyPosition = true;
             }
 
-            if (!falling && i%3 == 0 && i%6!=0 && !up ){
+            if (!falling && i%4 == 0 && !up ){
                 reference_pos -= movingVelocity;
                 blocksArray[i].position.y -= movingVelocity;
                 blocksArray[i].__dirtyPosition = true;
             }
-
-            if (!falling && i%6 == 0 && up ){
-                reference_pos -= movingVelocity;
-                blocksArray[i].position.y -= movingVelocity;
-                blocksArray[i].__dirtyPosition = true;
-            }
-
-            if (!falling && i%6 == 0 && !up ){
-                reference_pos += movingVelocity;
-                blocksArray[i].position.y += movingVelocity;
-                blocksArray[i].__dirtyPosition = true;
-            }
         }
 
-        /*if ( input.direction !== null ) {
-            if (input.steering < 0) {
-                prueba += 0.1;
-            }
-            else {
-                prueba -= 0.1;
-            }
-        }
-        else {
-            prueba -= 0.1;
-            if (prueba <= 0) {
-                prueba = 0;
-            }
-        }*/
-        // sacar front vector: sacar rotacion de la view matrix. luego multiplicas esa rotacion por vector (0, 1, 0), te dará el frontVector
-        // buscar en google: extractRotation
         camera.position.copy( vehicle.mesh.position ).add( new THREE.Vector3( 0, 30/*lo colocamos aqui*/, -50 ) );
         camera.lookAt( vehicle.mesh.position );
 
-        //light.target.position.copy( vehicle.mesh.position );
-        //light.position.addVectors( light.target.position, new THREE.Vector3( 20, 20, -15 ) );
-
+        if (points < 0) {
+            points = 0;
+        }
         var deathY = firstY - (vehicle.mesh.position.z * heightRatio) + blockHeight - deathMargin;
         if (vehicle.mesh.position.y < deathY && !deathDetected) {
             deathDetected = true;
             swal({
                 title: "Game over",
-                text: 'You earned ' + points + ' points',
+                text: 'You earned ' + points + ' points!',
                 button: "Play again",
                 closeOnEsc: false,
                 closeOnClickOutside: false
@@ -698,11 +477,6 @@ render = function() {
             jQuery('#points').html(points + ' points');
         }
     }
-
-
-
-
-
 
     renderer.render( scene, camera );
     render_stats.update();
