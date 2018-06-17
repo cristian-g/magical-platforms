@@ -435,6 +435,12 @@ var blockSeparation = 10;
 
 var maxBlocks = 40;
 
+var firstY = -20;
+var heightRatio = 0.2;
+var blockHeight = 3;
+var deathMargin = 300;
+var deathDetected = false;
+
 function init() {
 
     //scene = new THREE.Scene();
@@ -482,48 +488,24 @@ function init() {
 
     createCamera();
 
-
-
-
-    var cityGeometry = new THREE.Geometry();
-
-    var lastY = -20;
-    for( var i = 0; i < maxBlocks; i ++ ){
-        var newDifference = Math.floor(Math.random() * 2) + 1;
-        var newY = lastY - newDifference;
-        lastY = newY;
-
-
-
-        /*var geometry = new THREE.BoxGeometry(
-            scaleX,
-            10,
-            scaleX,
-        );// put a random scale*/
+    for (var i = 0; i < maxBlocks; i ++) {
 
         var tileSize = Math.floor(Math.random() * 3) + 3;
-        var geometry = new THREE.CylinderGeometry( 1, tileSize*3, tileSize*3, 4 );
-        //var material = new THREE.MeshBasicMaterial( {color: 0xffff00 , wireframe:true} );
-        //var cylinder = new THREE.Mesh( geometry, material );
-
-
+        var geometry = new THREE.CylinderGeometry( 1, tileSize*3, blockHeight, 4 );
 
         assignUVs(geometry);
 
         var positionX   = Math.random() * (20 - 0) -10;
         var positionY   = newY;
         var positionZ   = i * blockSeparation;
+        var positionY   = firstY - (heightRatio*positionZ);
         var rotationY   = Math.random()*Math.PI*2;
         var rotationX   = Math.PI;
 
-
-
-
         var material_hidden = new THREE.MeshBasicMaterial();
-            //real_material = ...your dice material...;
         material_hidden.visible = false;
 
-        var lowPoly = new Physijs.ConvexMesh( geometry, block_materials[1], 0 );
+        var lowPoly = new Physijs.ConvexMesh( geometry, block_materials[Math.round(Math.random() * 6)], 0 );
         lowPoly.position.x   = positionX;
         lowPoly.position.y   = positionY;
         lowPoly.position.z   = positionZ;
@@ -641,7 +623,8 @@ render = function() {
         //light.target.position.copy( vehicle.mesh.position );
         //light.position.addVectors( light.target.position, new THREE.Vector3( 20, 20, -15 ) );
 
-        jQuery('#points').html(Math.round(vehicle.mesh.position.z/10) + ', ' + vehicle.mesh.position.y);
+        var deathY = firstY - (vehicle.mesh.position.z * heightRatio) + blockHeight;
+        jQuery('#points').html(Math.round(vehicle.mesh.position.z/10) + ', ' + vehicle.mesh.position.y + '. DEATH AT: ' + deathY);
     }
 
 
