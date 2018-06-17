@@ -588,7 +588,7 @@ render = function() {
     requestAnimationFrame( render );
     if ( vehicle ) {
 
-        var movingVelocity = vehicle.mesh.position.z * 0.0002 + 0.005;
+        var movingVelocity = 4* vehicle.mesh.position.z * 0.0002 + 0.005;
         var maxAmplitude = vehicle.mesh.position.z * 0.1 + 10;
         if (maxAmplitude > 60) {
             maxAmplitude = 60;
