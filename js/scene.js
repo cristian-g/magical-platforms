@@ -4,6 +4,9 @@ var renderer;
 var scene;
 var camera;
 
+var up = true;
+var reference_pos = 0;
+
 Physijs.scripts.worker = 'js/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
@@ -495,7 +498,8 @@ function init() {
 
         assignUVs(geometry);
 
-        var positionX   = 0;
+        var positionX   = Math.random() * (20 - 0) -10;
+        var positionY   = newY;
         var positionZ   = i * blockSeparation;
         var positionY   = firstY - (heightRatio*positionZ);
         var rotationY   = Math.random()*Math.PI*2;
@@ -571,15 +575,34 @@ render = function() {
     requestAnimationFrame( render );
     if ( vehicle ) {
 
+        if (reference_pos > 10){
+            up = false;
+        }
+
+        if (reference_pos < -10){
+            up = true
+        }
 
         for (var i = 0; i < blocksArray.length; i++) {
+            var falling = false;
             if (blocksArray[i].position.z + blockSeparation < vehicle.mesh.position.z) {
+                blocksArray[i].position.y -= 0.1;
+                blocksArray[i].__dirtyPosition = true;
+                falling =true;
+            }
+
+            if (!falling && i%5 == 0 && up ){
+                reference_pos += 0.01;
+                blocksArray[i].position.y += 0.1;
+                blocksArray[i].__dirtyPosition = true;
+            }
+
+            if (!falling && i%5 == 0 && !up ){
+                reference_pos -= 0.01;
                 blocksArray[i].position.y -= 0.1;
                 blocksArray[i].__dirtyPosition = true;
             }
         }
-
-
 
         /*if ( input.direction !== null ) {
             if (input.steering < 0) {
