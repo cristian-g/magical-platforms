@@ -7,6 +7,9 @@ var camera;
 var up = true;
 var reference_pos = 0;
 
+var ball1;
+var ball2;
+
 Physijs.scripts.worker = 'js/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
@@ -195,6 +198,8 @@ function createBox(box_material, x, y, z) {
         z
     );
     scene.add( box );
+
+    return box;
 }
 
 function createVehicle() {
@@ -524,11 +529,10 @@ function init() {
 
         scene.add( lowPoly );
         blocksArray.push(lowPoly);
-
-        if (i == 20) {
-            createBox(box_material, positionX, positionY+10, positionZ);
-        }
     }
+
+    ball1 = createBox(box_material, blocksArray[5].position.x, blocksArray[5].position.y + 10, blocksArray[5].position.z);
+    ball2 = createBox(box_material, blocksArray[15].position.x, blocksArray[15].position.y + 10, blocksArray[15].position.z);
 
     lastBlockI = maxBlocks - 1;
 
@@ -610,6 +614,16 @@ render = function() {
                     var positionY = firstY - (heightRatio * positionZ);
                     blocksArray[i].position.z = positionZ;
                     blocksArray[i].position.y = positionY;
+
+                    if (i == 5){
+                        ball1.position.set(blocksArray[5].position.x, positionY + 10, positionZ);
+                        console.log("hola");
+                    }
+                    if (i == 15){
+
+                        ball2.position.set(blocksArray[15].position.x, positionY + 10, positionZ);
+
+                    }
                 }
             }
             if (i == 0 || i == 1) {
