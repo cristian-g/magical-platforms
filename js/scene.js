@@ -616,15 +616,27 @@ render = function() {
                 continue;
             }
 
-            if (!falling && i%3 == 0 && up ){
+            if (!falling && i%3 == 0 && i%6!=0 && up ){
                 reference_pos += movingVelocity;
                 blocksArray[i].position.y += movingVelocity;
                 blocksArray[i].__dirtyPosition = true;
             }
 
-            if (!falling && i%3 == 0 && !up ){
+            if (!falling && i%3 == 0 && i%6!=0 && !up ){
                 reference_pos -= movingVelocity;
                 blocksArray[i].position.y -= movingVelocity;
+                blocksArray[i].__dirtyPosition = true;
+            }
+
+            if (!falling && i%6 == 0 && up ){
+                reference_pos -= movingVelocity;
+                blocksArray[i].position.y -= movingVelocity;
+                blocksArray[i].__dirtyPosition = true;
+            }
+
+            if (!falling && i%6 == 0 && !up ){
+                reference_pos += movingVelocity;
+                blocksArray[i].position.y += movingVelocity;
                 blocksArray[i].__dirtyPosition = true;
             }
         }
