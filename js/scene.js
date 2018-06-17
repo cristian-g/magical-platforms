@@ -496,7 +496,6 @@ function init() {
         assignUVs(geometry);
 
         var positionX   = Math.random() * (20 - 0) -10;
-        var positionY   = newY;
         var positionZ   = i * blockSeparation;
         var positionY   = firstY - (heightRatio*positionZ);
         var rotationY   = Math.random()*Math.PI*2;
